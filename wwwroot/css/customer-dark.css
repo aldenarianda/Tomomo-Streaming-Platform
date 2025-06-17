@@ -1,0 +1,254 @@
+﻿:root {
+    --customer-bg: #141414;
+    --customer-surface: #1f1f1f;
+    --customer-navbar-bg: #101010;
+    --customer-text: #e5e5e5;
+    --customer-text-muted: #8c8c8c;
+    --customer-brand-accent: #A04747;
+}
+
+body.customer-theme {
+    background-color: var(--customer-bg);
+    color: var(--customer-text);
+}
+
+.navbar-customer {
+    background: linear-gradient(to bottom, #181818, #101010) !important;
+    border-bottom: 1px solid #222;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+    .navbar-customer .nav-link {
+        color: var(--customer-text-muted);
+        font-weight: 500;
+        transition: color 0.2s ease-in-out;
+    }
+
+        .navbar-customer .nav-link:hover, .navbar-customer .nav-link.active {
+            color: #ffffff;
+        }
+
+.btn-logout {
+    padding: 0.375rem 0.75rem;
+    color: var(--customer-text-muted);
+    background-color: transparent;
+    border: 1px solid var(--customer-text-muted);
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-logout:hover {
+        color: #ffffff;
+        background-color: var(--customer-brand-accent);
+        border-color: var(--customer-brand-accent);
+    }
+
+.footer.customer-footer {
+    background-color: transparent;
+    color: var(--customer-text-muted);
+}
+
+
+.home-hero-section {
+    position: relative;
+    height: 70vh;
+    margin: -1.5rem -1.5rem 2rem;
+    overflow: hidden;
+    background-color: #000;
+    display: flex;
+    align-items: flex-end;
+}
+
+.hero-video-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 177.77vh;
+    min-width: 100%;
+    height: 100vh;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.home-hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(20,20,20,1) 0%, rgba(20,20,20,0.5) 50%, rgba(20,20,20,0) 100%), linear-gradient(to top, var(--customer-bg) 0%, transparent 20%);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 2rem;
+    padding-bottom: 4rem;
+    max-width: 50%;
+}
+
+    .hero-content .display-4 {
+        text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+
+    .hero-content .lead {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        opacity: 0.9;
+    }
+
+
+.movie-card-link {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+    .movie-card-link:hover {
+        transform: scale(1.03);
+    }
+
+.movie-card-poster-wrapper {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--customer-surface);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+    .movie-card-poster-wrapper:hover {
+        box-shadow: 0 8px 35px rgba(0,0,0,0.5);
+    }
+
+.movie-card-poster {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.movie-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(4px);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1.25rem;
+}
+
+.movie-card-poster-wrapper:hover .movie-card-overlay {
+    opacity: 1;
+}
+
+.movie-card-overlay p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-card-info {
+    padding-top: 0.75rem;
+}
+
+.movie-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--customer-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.1rem;
+}
+
+.movie-card-meta {
+    font-size: 0.85rem;
+    color: var(--customer-text-muted);
+}
+
+
+.details-backdrop-container {
+    position: relative;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    padding: 2rem;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+    .details-backdrop-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(18, 18, 18, 0.75);
+        backdrop-filter: blur(15px) saturate(120%);
+        -webkit-backdrop-filter: blur(15px) saturate(120%);
+    }
+
+.details-content {
+    position: relative;
+    z-index: 2;
+}
+
+.badge-genre {
+    color: #fff;
+    padding: 0.4em 0.75em;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.badge-action {
+    background-color: #dc3545;
+}
+
+.badge-drama {
+    background-color: #0d6efd;
+}
+
+.badge-comedy {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-thriller {
+    background-color: #6f42c1;
+}
+
+.badge-scifi {
+    background-color: #0dcaf0;
+}
+
+.badge-anime {
+    background-color: #d63384;
+}
+
+.badge-adventure {
+    background-color: #198754;
+}
+
+.badge-default {
+    background-color: #6c757d;
+}

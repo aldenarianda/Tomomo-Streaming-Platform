@@ -1,0 +1,26 @@
+﻿@model Tomomo7.Models.Genre
+
+@{
+    ViewData["Title"] = "Create Genre";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<<h1>Create</h1>
+<h4>Genre</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="GenreName" class="form-label"></label>
+                <input asp-for="GenreName" class="form-control" />
+                <span asp-validation-for="GenreName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

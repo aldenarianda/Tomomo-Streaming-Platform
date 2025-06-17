@@ -1,0 +1,111 @@
+﻿@model Tomomo7.ViewModels.BrowseViewModel
+
+@{
+    ViewData["Title"] = "Welcome to Tomomo";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+@if (Model.FeaturedMovie != null)
+{
+    <div class="home-hero-section">
+        <div id="hero-player" class="hero-video-background"></div>
+
+        <div class="hero-content">
+            <h1 class="display-4 fw-bold">@Model.FeaturedMovie.Title</h1>
+            <p class="lead my-3">@Model.FeaturedMovie.Description</p>
+            <div>
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@Model.FeaturedMovie.MovieId" class="btn btn-light btn-lg">
+                    <i class="fa-solid fa-circle-info me-2"></i> More Info
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="container-fluid">
+    <h2 class="mb-3">Now Streaming</h2>
+
+    <div class="mb-4">
+        <div class="row g-2 align-items-center">
+            <div class="col-lg-4"><form asp-action="Index" method="get"><input type="hidden" name="genreId" value="@ViewData["CurrentGenre"]" /><div class="input-group"><input type="text" name="searchString" class="form-control" placeholder="Search movies..." value="@ViewData["CurrentSearch"]" style="background-color: #333; border-color: #444; color: white;"><button class="btn btn-outline-secondary" type="submit">Search</button></div></form></div>
+            <div class="col-lg-8 text-lg-end text-center mt-2 mt-lg-0"><a asp-action="Index" asp-route-searchString="@ViewData["CurrentSearch"]" asp-route-genreId="" class="btn btn-sm @(Model.CurrentGenreId == null ? "btn-danger" : "btn-outline-light") me-1 mb-1">All Genres</a>@foreach (var genre in Model.AllGenres)
+                {
+                    <a asp-action="Index" asp-route-searchString="@ViewData["CurrentSearch"]" asp-route-genreId="@genre.GenreId" class="btn btn-sm @(Model.CurrentGenreId == genre.GenreId ? "btn-danger" : "btn-outline-light") me-1 mb-1">@genre.GenreName</a>
+                }</div>
+        </div>
+    </div>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-4">
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="col"><a asp-controller="Home" asp-action="Details" asp-route-id="@movie.MovieId" class="movie-card-link"><div class="movie-card-poster-wrapper"><img src="@Url.Content(movie.PosterPath)" class="movie-card-poster" alt="Poster for @movie.Title" onerror="this.onerror=null;this.src='https://placehold.co/400x600/1f1f1f/e5e5e5?text=@movie.Title';"><div class="movie-card-overlay"><p>@movie.Description</p></div></div><div class="movie-card-info"><div class="movie-card-title">@movie.Title</div><div class="movie-card-meta"><span>@movie.ReleaseYear</span>@if (movie.DurationMinutes.HasValue)
+                            {
+                                <span class="mx-1">&bull;</span>
+
+                                <span>@movie.DurationMinutes min</span>
+                            }</div></div></a></div>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        @if (Model.FeaturedMovie != null && !string.IsNullOrEmpty(Model.FeaturedMovie.VideoUrl))
+        {
+
+            var tempVideoId = Model.FeaturedMovie.VideoUrl;
+
+            if (tempVideoId.Contains("v="))
+            {
+                tempVideoId = tempVideoId.Split("v=")[1].Split('&')[0];
+            }
+            else if (tempVideoId.Contains("youtu.be/"))
+            {
+                tempVideoId = tempVideoId.Split("youtu.be/")[1];
+            }
+
+            <text>
+                    let player;
+                    const videoId = '@tempVideoId';
+                    const startSeconds = 30; // Detik mulai untuk cuplikan
+                    const snippetDuration = 15; // Durasi cuplikan
+
+                    function onYouTubeIframeAPIReady() {
+                        player = new YT.Player('hero-player', {
+                            videoId: videoId,
+                            playerVars: {
+                                'autoplay': 1,
+                                'mute': 1,
+                                'controls': 0, 
+                                'showinfo': 0,
+                                'rel': 0,
+                                'playsinline': 1,
+                                'start': startSeconds,
+                                'loop': 0 
+                            },
+                            events: {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                        }
+
+                    function onPlayerReady(event) {
+                        event.target.playVideo();
+                        }
+
+                    // Fungsi ini akan membuat video berputar ulang
+                    function onPlayerStateChange(event) {
+                            if (event.data === YT.PlayerState.PLAYING) {
+                                const timeChecker = setInterval(() => {
+                                    if (player.getCurrentTime() >= startSeconds + snippetDuration) {
+                        player.seekTo(startSeconds, true); 
+                                    }
+                                }, 1000);
+                            }
+                        }
+            </text>
+        }
+    </script>
+}

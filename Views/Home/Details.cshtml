@@ -1,0 +1,104 @@
+﻿@model Tomomo7.Models.Movie
+
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    bool isFavorited = ViewData["IsFavorited"] as bool? ?? false;
+
+    string videoId = Model.VideoUrl ?? "";
+    if (!string.IsNullOrEmpty(videoId))
+    {
+        if (videoId.Contains("v=")) { videoId = videoId.Split("v=")[1].Split('&')[0]; }
+        else if (videoId.Contains("youtu.be/")) { videoId = videoId.Split("youtu.be/")[1]; }
+    }
+
+    Func<string, string> GetGenreBadgeClass = (genreName) =>
+    {
+        switch (genreName.ToLower())
+        {
+            case "action": return "badge-action";
+            case "drama": return "badge-drama";
+            case "comedy": return "badge-comedy";
+            case "thriller": return "badge-thriller";
+            case "sci-fi": case "science fiction": return "badge-scifi";
+            case "anime": return "badge-anime";
+            case "adventure": return "badge-adventure";
+            default: return "badge-default";
+        }
+    };
+}
+
+<div class="mb-3">
+    <a asp-action="Index" class="btn btn-outline-secondary">&larr; Back to Movie List</a>
+</div>
+
+<div class="details-backdrop-container" style="background-image: url('@Url.Content(Model.PosterPath ?? "")');">
+    <div class="details-content text-white">
+
+        <div class="row">
+            <div class="col-md-4 col-lg-3 text-center">
+                <img src="@Url.Content(Model.PosterPath)"
+                     class="img-fluid rounded shadow-lg mb-3"
+                     alt="Poster for @Model.Title"
+                     onerror="this.onerror=null;this.src='https://placehold.co/400x600/343a40/FFFFFF?text=No+Poster';">
+            </div>
+
+            <div class="col-md-8 col-lg-9">
+                <h1 class="display-4 fw-bold">@Model.Title</h1>
+                <div class="d-flex align-items-center mb-3" style="opacity: 0.8;">
+                    <span>@Model.ReleaseYear</span>
+                    <span class="mx-2">&bull;</span>
+                    <span>@(Model.Rating ?? "N/A")</span>
+                    <span class="mx-2">&bull;</span>
+                    <span>@(Model.DurationMinutes.HasValue ? $"{Model.DurationMinutes} min" : "")</span>
+                </div>
+
+                <div class="mb-4">
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <span class="badge rounded-pill me-2 badge-genre @GetGenreBadgeClass(genre.GenreName)">@genre.GenreName</span>
+                    }
+                </div>
+
+                <h4 class="mt-4">Synopsis</h4>
+                <p style="opacity: 0.9;">@(Model.Description ?? "No description available.")</p>
+
+                <p class="mt-4"><strong>Director:</strong> @(Model.Director ?? "N/A")</p>
+
+                <div class="mt-4">
+                    <form asp-controller="Favorites" asp-action="ToggleFavorite" method="post" class="d-inline-block">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="movieId" value="@Model.MovieId" />
+                        <button type="submit" class="btn btn-outline-light">
+                            @if (isFavorited)
+                            {
+                                <i class="fa-solid fa-check me-2"></i> <span>Added to My List</span>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-plus me-2"></i> <span>Add to My List</span>
+                            }
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bagian Trailer dipindahkan ke bawah -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <hr style="opacity: 0.2;" />
+                <h3 class="mb-3 mt-4">Movie</h3>
+                <div class="ratio ratio-16x9 shadow-lg rounded">
+                    <iframe src="https://www.youtube.com/embed/@videoId?rel=0"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

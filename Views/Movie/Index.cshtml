@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Tomomo7.Models.Movie>
+
+@{
+    ViewData["Title"] = "Manage Movies";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int rowNo = 0;
+
+    Func<string, string> GetGenreBadgeClass = (genreName) =>
+    {
+        switch (genreName.ToLower())
+        {
+            case "action": return "badge-action";
+            case "drama": return "badge-drama";
+            case "comedy": return "badge-comedy";
+            case "thriller": return "badge-thriller";
+            case "sci-fi":
+            case "science fiction": return "badge-scifi";
+            case "anime": return "badge-anime";
+            case "adventure": return "badge-adventure";
+            default: return "badge-default";
+        }
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Manage Movies</h1>
+    <a asp-action="Create" class="btn btn-primary">Create New Movie</a>
+</div>
+
+<form asp-action="Index" method="get">
+    <div class="input-group mb-3">
+        <input type="text" name="SearchString" class="form-control" placeholder="Search by Title or Director..." value="@ViewData["CurrentFilter"]">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+        <a asp-action="Index" class="btn btn-outline-danger">Clear Filter</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Poster</th>
+                <th>Title</th>
+                <th>Release Year</th>
+                <th>Genres</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@{
+                            rowNo++;
+                        } @rowNo</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.PosterPath))
+                        {
+                            <img src="@Url.Content(item.PosterPath)" alt="Poster for @item.Title" style="width: 60px; height: 90px; object-fit: cover; border-radius: 4px;" />
+                        }
+                        else
+                        {
+                            <div class="text-center" style="width: 60px; height: 90px; background-color: #343a40; border-radius: 4px; display:flex; align-items:center; justify-content:center; font-size:0.8rem;"><span>No Poster</span></div>
+                        }
+                    </td>
+                    <td>@item.Title</td>
+                    <td>@item.ReleaseYear</td>
+                    <td>
+                        @if (item.Genres != null && item.Genres.Any())
+                        {
+                            @foreach (var genre in item.Genres)
+                            {
+                                <span class="badge rounded-pill me-1 badge-genre @GetGenreBadgeClass(genre.GenreName)">@genre.GenreName</span>
+                            }
+                        }
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Details" asp-route-id="@item.MovieId" class="btn btn-sm btn-outline-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.MovieId" class="btn btn-sm btn-outline-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.MovieId" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

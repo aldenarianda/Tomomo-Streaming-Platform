@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Tomomo7.Models.Movie>
+
+@{
+    ViewData["Title"] = "My List";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">My List</h1>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <p class="lead text-muted">Your list is empty.</p>
+            <p class="text-muted">Add movies to your list from the details page.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-danger mt-3">Browse Movies</a>
+        </div>
+    }
+    else
+    {
+        <!-- Galeri Film Favorit -->
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-4">
+            @foreach (var movie in Model)
+            {
+                <div class="col">
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@movie.MovieId" class="movie-card-link">
+                        <div class="movie-card-poster-wrapper">
+                            <img src="@Url.Content(movie.PosterPath)" class="movie-card-poster" alt="Poster for @movie.Title"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/400x600/1f1f1f/e5e5e5?text=@movie.Title';">
+
+                            <div class="movie-card-overlay">
+                                <p>@movie.Description</p>
+                            </div>
+                        </div>
+                        <div class="movie-card-info">
+                            <div class="movie-card-title">@movie.Title</div>
+                            <div class="movie-card-meta">
+                                <span>@movie.ReleaseYear</span>
+                                @if (movie.DurationMinutes.HasValue)
+                                {
+                                    <span class="mx-1">&bull;</span>
+                                    <span>@movie.DurationMinutes min</span>
+                                }
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>

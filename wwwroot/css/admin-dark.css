@@ -1,0 +1,165 @@
+﻿:root {
+    --admin-bg: #212529;
+    --admin-surface: #343a40;
+    --admin-navbar-bg: #A04747;
+    --admin-text: #e9ecef;
+    --admin-text-muted: #adb5bd;
+    --admin-border: #495057;
+    --admin-primary-accent: #A04747;
+}
+
+body.admin-dark-mode {
+    background-color: var(--admin-bg);
+    color: var(--admin-text);
+}
+
+.admin-dark-mode .navbar-admin-top {
+    background-color: var(--admin-navbar-bg) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+    .admin-dark-mode .navbar-admin-top .nav-link,
+    .admin-dark-mode .navbar-admin-top .navbar-text {
+        color: rgba(235, 225, 225, 0.9);
+    }
+
+        .admin-dark-mode .navbar-admin-top .nav-link:hover {
+            color: #ffffff;
+        }
+
+.kpi-card {
+    border: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-gradient-revenue {
+    background: linear-gradient(45deg, #6f42c1, #e83e8c);
+}
+
+.bg-gradient-subscriptions {
+    background: linear-gradient(45deg, #1cc88a, #36b9cc);
+}
+
+.bg-gradient-movies {
+    background: linear-gradient(45deg, var(--admin-primary-accent), #c46464);
+}
+
+.bg-gradient-users {
+    background: linear-gradient(45deg, #4e73df, #224abe);
+}
+
+.kpi-card .kpi-icon {
+    position: absolute;
+    right: 15px;
+    bottom: 5px;
+    font-size: 4rem;
+    opacity: 0.15;
+    transform: rotate(-15deg);
+}
+
+.admin-dark-mode .card {
+    background-color: var(--admin-surface);
+    border: 1px solid var(--admin-border);
+}
+
+    .admin-dark-mode .card:not(.kpi-card) {
+        background-color: var(--admin-bg);
+        border: 1px solid var(--admin-surface);
+    }
+
+.admin-dark-mode .table,
+.admin-dark-mode .table th,
+.admin-dark-mode .table td {
+    color: var(--admin-text);
+    border-color: var(--admin-border);
+}
+
+.admin-dark-mode .table-hover > tbody > tr:hover > * {
+    --bs-table-accent-bg: rgba(255, 255, 255, 0.05);
+    color: var(--admin-text);
+}
+
+.badge.badge-genre {
+    color: #fff;
+    padding: 0.4em 0.75em;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-action {
+    background-color: #dc3545;
+}
+
+.badge-drama {
+    background-color: #0d6efd;
+}
+
+.badge-comedy {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-thriller {
+    background-color: #6f42c1;
+}
+
+.badge-scifi {
+    background-color: #0dcaf0;
+    color: #000;
+}
+
+.badge-anime {
+    background-color: #d63384;
+}
+
+.badge-adventure {
+    background-color: #198754;
+}
+
+.badge-default {
+    background-color: #6c757d;
+}
+
+
+.admin-dark-mode .form-control,
+.admin-dark-mode .form-select,
+.admin-dark-mode .choices__inner {
+    background-color: var(--admin-bg);
+    color: var(--admin-text);
+    border: 1px solid var(--admin-border);
+}
+
+    .admin-dark-mode .form-control:focus,
+    .admin-dark-mode .form-select:focus {
+        background-color: var(--admin-surface);
+        border-color: var(--admin-primary-accent);
+    }
+
+.admin-dark-mode .choices__list--multiple .choices__item {
+    background-color: var(--admin-primary-accent);
+    border-color: var(--admin-primary-accent);
+}
+
+.admin-dark-mode .choices__list--dropdown {
+    background-color: var(--admin-surface);
+    border-color: var(--admin-border);
+}
+    .admin-dark-mode .choices__list--dropdown .choices__item {
+        color: var(--admin-text);
+    }
+
+    .admin-dark-mode .choices__list--dropdown .choices__item--selectable.is-highlighted {
+        background-color: var(--admin-bg);
+    }
+
+.admin-dark-mode .btn-primary {
+    background-color: var(--admin-primary-accent);
+    border-color: var(--admin-primary-accent);
+    color: #ffffff;
+}
+
+    .admin-dark-mode .btn-primary:hover {
+        filter: brightness(110%);
+    }

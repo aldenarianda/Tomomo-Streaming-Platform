@@ -1,0 +1,78 @@
+﻿@model Tomomo7.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Manage Your Profile</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["DeleteErrorMessage"] != null)
+    {
+        <div class="alert alert-danger" role="alert">@TempData["DeleteErrorMessage"]</div>
+    }
+
+    <div class="row">
+        <!-- Kolom Kiri: Form Utama -->
+        <div class="col-lg-8 mb-4 mb-lg-0">
+            <div class="card h-100" style="background-color: var(--customer-surface);">
+                <div class="card-body">
+                    <form asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+                        <h5 class="card-title mb-4">Account Information</h5>
+                        <!-- ... Form fields yang sudah ada ... -->
+                        <div class="row"><div class="col-md-6 mb-3"><label asp-for="Username"></label><input asp-for="Username" class="form-control" style="background-color: #333; border-color: #444; color: white;"><span asp-validation-for="Username" class="text-danger"></span></div><div class="col-md-6 mb-3"><label asp-for="Email"></label><input asp-for="Email" class="form-control" readonly style="background-color: #444; border-color: #555; color: #8c8c8c;"></div></div><div class="row"><div class="col-md-6 mb-3"><label asp-for="PhoneNumber"></label><input asp-for="PhoneNumber" class="form-control" style="background-color: #333; border-color: #444; color: white;"></div><div class="col-md-6 mb-3"><label asp-for="Address"></label><input asp-for="Address" class="form-control" style="background-color: #333; border-color: #444; color: white;"></div></div>
+                        <hr class="my-4"><h5 class="card-title mb-4">Change Password</h5><p class="text-muted small">Leave these fields blank if you don't want to change your password.</p><div class="row"><div class="col-md-12 mb-3"><label asp-for="OldPassword"></label><input asp-for="OldPassword" type="password" class="form-control" style="background-color: #333; border-color: #444; color: white;"><span asp-validation-for="OldPassword" class="text-danger"></span></div></div><div class="row"><div class="col-md-6 mb-3"><label asp-for="NewPassword"></label><input asp-for="NewPassword" type="password" class="form-control" style="background-color: #333; border-color: #444; color: white;"><span asp-validation-for="NewPassword" class="text-danger"></span></div><div class="col-md-6 mb-3"><label asp-for="ConfirmNewPassword"></label><input asp-for="ConfirmNewPassword" type="password" class="form-control" style="background-color: #333; border-color: #444; color: white;"><span asp-validation-for="ConfirmNewPassword" class="text-danger"></span></div></div>
+                        <div class="mt-3"><button type="submit" class="btn btn-danger">Save Changes</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Delete Account -->
+        <div class="col-lg-4">
+            <div class="card h-100" style="background-color: var(--customer-surface);">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-3">Delete Account</h5>
+                    <p class="text-muted small flex-grow-1">Once you delete your account, there is no going back. All your data, including subscription history, will be permanently removed. Please be certain.</p>
+                    <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                        Delete My Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Konfirmasi Hapus Akun -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: var(--customer-surface);">
+            <form asp-action="DeleteAccount" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="deleteAccountModalLabel">Are you absolutely sure?</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This action cannot be undone. To confirm, please type your password below.</p>
+                    <div class="mb-3">
+                        <label asp-for="PasswordForDelete" class="form-label"></label>
+                        <input asp-for="PasswordForDelete" type="password" class="form-control" required style="background-color: #333; border-color: #444; color: white;">
+                        <span asp-validation-for="PasswordForDelete" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+﻿@model Tomomo7.Models.Movie
+
+@{
+    ViewData["Title"] = "Movie Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    string videoId = Model.VideoUrl ?? "";
+    if (!string.IsNullOrEmpty(videoId))
+    {
+        if (videoId.Contains("v=")) { videoId = videoId.Split("v=")[1].Split('&')[0]; }
+        else if (videoId.Contains("youtu.be/")) { videoId = videoId.Split("youtu.be/")[1]; }
+    }
+
+    Func<string, string> GetGenreBadgeClass = (genreName) =>
+    {
+        switch (genreName.ToLower())
+        {
+            case "action": return "badge-action";
+            case "drama": return "badge-drama";
+            case "comedy": return "badge-comedy";
+            case "thriller": return "badge-thriller";
+            case "sci-fi":
+            case "science fiction": return "badge-scifi";
+            case "anime": return "badge-anime";
+            case "adventure": return "badge-adventure";
+            default: return "badge-default";
+        }
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>@Model.Title</h1>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.MovieId" class="btn btn-outline-warning">
+            <i class="fa-solid fa-pencil me-2"></i>Edit Movie
+        </a>
+        <a asp-action="Index" class="btn btn-outline-secondary">&larr; Back to List</a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Kolom Kiri: Video & Sinopsis -->
+    <div class="col-lg-8">
+        <!-- Video Player -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/@videoId?rel=0"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sinopsis -->
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="m-0">Synopsis</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">@(Model.Description ?? "No description available.")</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Poster -->
+        <div class="card shadow-sm mb-4">
+            <img src="@Url.Content(Model.PosterPath)" class="card-img-top" alt="Poster for @Model.Title"
+                 onerror="this.onerror=null;this.src='https://placehold.co/400x600/343a40/FFFFFF?text=No+Poster';">
+        </div>
+
+        <!-- Atribut Film -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="m-0">Details</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Release Year:</strong>
+                        <span>@Model.ReleaseYear</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Duration:</strong>
+                        <span>@(Model.DurationMinutes.HasValue ? $"{Model.DurationMinutes} min" : "N/A")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Rating:</strong>
+                        <span>@(Model.Rating ?? "N/A")</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <strong>Director:</strong>
+                        <span>@(Model.Director ?? "N/A")</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Genres:</strong>
+                        <div class="mt-2">
+                            @foreach (var genre in Model.Genres)
+                            {
+                                <span class="badge me-1 badge-genre @GetGenreBadgeClass(genre.GenreName)">@genre.GenreName</span>
+                            }
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

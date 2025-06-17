@@ -1,0 +1,60 @@
+﻿@model Tomomo7.ViewModels.SubscriptionViewModel
+
+@{
+    ViewData["Title"] = "Subscription Plans";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Choose Your Plan</h1>
+        <p class="lead text-muted">Join Tomomo today. Cancel anytime.</p>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success text-center" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (Model.CurrentSubscription != null)
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">You have an active subscription!</h4>
+            <p>Your current plan is <strong>@Model.CurrentSubscription.Plan.PlanName</strong> and it's active until <strong>@Model.CurrentSubscription.EndDate.ToString("dd MMMM yyyy")</strong>.</p>
+            <hr>
+            <p class="mb-0">Choosing a new plan will replace your current one immediately.</p>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+        @foreach (var plan in Model.AvailablePlans)
+        {
+            <div class="col">
+                <div class="card h-100 rounded-3 shadow-sm" style="background-color: #1f1f1f;">
+                    <div class="card-header py-3" style="background-color: #A04747; color: white;">
+                        <h4 class="my-0 fw-normal">@plan.PlanName</h4>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h1 class="card-title pricing-card-title">@plan.Price.ToString("C", new System.Globalization.CultureInfo("id-ID"))<small class="text-muted fw-light">/mo</small></h1>
+                        <ul class="list-unstyled mt-3 mb-4 flex-grow-1">
+                            <li>Watch on any device</li>
+                            <li>Unlimited movies and TV shows</li>
+                            <li>Recommendations just for you</li>
+                            <li>Duration: @plan.DurationMonths months</li>
+                        </ul>
+
+                        <form asp-action="ChoosePlan" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="planId" value="@plan.PlanId" />
+                            <button type="submit" class="w-100 btn btn-lg btn-danger">
+                                @(Model.CurrentSubscription?.PlanId == plan.PlanId ? "Current Plan" : "Choose Plan")
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Tomomo7.Models.Genre>
+
+@{
+    ViewData["Title"] = "Manage Genres";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Manage Genres</h1>
+    <a asp-action="Create" class="btn btn-primary">Create New Genre</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                
+                <th>Genre Name</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    
+                    <td>@item.GenreName</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@item.GenreId" class="btn btn-sm btn-outline-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.GenreId" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

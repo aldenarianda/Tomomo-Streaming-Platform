@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Tomomo7.Models.Subscription>
+
+@{
+    ViewData["Title"] = "Subscription History";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Subscription History</h1>
+
+    <div class="card" style="background-color: var(--customer-surface);">
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <p class="lead text-muted">You have no subscription history yet.</p>
+                    <a asp-controller="Subscription" asp-action="Index" class="btn btn-danger">View Plans</a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover" style="color: var(--customer-text);">
+                        <thead>
+                            <tr>
+                                <th>Purchase Date</th>
+                                <th>Plan</th>
+                                <th>Period</th>
+                                <th>Payment Method</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.PurchaseDate.ToString("dd MMMM yyyy")</td>
+                                    <td>@item.Plan.PlanName</td>
+                                    <td>@item.StartDate.ToString("dd MMM") - @item.EndDate.ToString("dd MMM yyyy")</td>
+                                    <td>@item.PaymentMethod</td>
+                                    <td>
+                                        @if (item.Status.ToLower() == "active")
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else if (item.Status.ToLower() == "cancelled")
+                                        {
+                                            <span class="badge bg-warning text-dark">Cancelled</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@item.Status</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
